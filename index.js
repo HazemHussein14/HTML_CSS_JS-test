@@ -3,38 +3,39 @@ const galleryCards = document.querySelectorAll(".gallery .img-holder");
 const productDescriptions = document.querySelectorAll(".product-description");
 const container = document.getElementById("container");
 const registerContainer = document.getElementById("register-container");
+const nameInput = document.getElementById("register-name");
+const emailInput = document.getElementById("register-email");
+const passwordInput = document.getElementById("password");
 
-registerForm.addEventListener("submit", function (event) {
-  event.preventDefault(); // Prevent form submission
-  const nameInput = document.getElementById("register-name");
-  const emailInput = document.getElementById("register-email");
-  const passwordInput = document.getElementById("password");
-  let isValid = true;
+let isValid;
+
+function showSuccess(input) {
+  const formControl = input.parentElement;
+  formControl.className = "form-control valid"
+}
+
+function showError(input) {
+  const formControl = input.parentElement;
+  formControl.className = "form-control invalid"
+}
+
+function checkRequired(inputArr) {
+  inputArr.forEach((input) => {
+    if (input.value.trim() === "") {
+      showError(input);
+      isValid = false
+    } else {
+      showSuccess(input);
+      isValid = true
+    }
+  });
+}
+
+registerForm.addEventListener("submit", (e) => {
+  e.preventDefault(); // Prevent form submission
 
   // Perform form validation
-  if (nameInput.value.trim() === "") {
-    nameInput.parentNode.classList.add("invalid");
-    isValid = false;
-  } else {
-    nameInput.parentNode.classList.remove("invalid");
-    nameInput.parentNode.classList.add("valid");
-  }
-
-  if (emailInput.value.trim() === "") {
-    emailInput.parentNode.classList.add("invalid");
-    isValid = false;
-  } else {
-    emailInput.parentNode.classList.remove("invalid");
-    emailInput.parentNode.classList.add("valid");
-  }
-
-  if (passwordInput.value.trim() === "") {
-    passwordInput.parentNode.classList.add("invalid");
-    isValid = false;
-  } else {
-    passwordInput.parentNode.classList.remove("invalid");
-    passwordInput.parentNode.classList.add("valid");
-  }
+  checkRequired([nameInput, emailInput, passwordInput]);
 
   // If form is valid, proceed with form submission
   if (isValid) {
